@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-g -Wall
+CFLAGS=-Wall -ansi -O3
 
 burster: main.o listas.o matriz.o graph.o
 	$(CC) $(CFLAGS) -o burster main.o listas.o matriz.o graph.o

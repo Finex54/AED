@@ -31,7 +31,7 @@ void PrintList(lista *lm){
     aux = getProxElementoLista(aux);
   }
 
-  printf( "...[DONE]\n" );
+  /*printf( "...[DONE]\n" );*/
 
   return;
 
@@ -68,8 +68,8 @@ void VarianteUm(matriz* mA, FILE *fp)
 {
 
   int contagem = countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1));
-  printf("\n\nContagem = %d\n\n", contagem);
-  fprintf(fp, "%d %d %d %d %d\n%d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixColunaCluster(mA), GetMatrixLinhaCluster(mA), contagem);
+  /*printf("\n\nContagem = %d\n\n", contagem);*/
+  fprintf(fp, "%d %d %d %d %d\n%d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA),contagem);
 
 
 }
@@ -159,8 +159,7 @@ int verifica_extensao(char* filename)
 
 void EscreveFileSaida(char *nomeEntrada, lista *lm)
 {
-
-  char ext[6] = "moves";
+  char ext[5] = "step";
   char nomeSaida[100];
   int i=0;
   FILE *fpOut;
@@ -172,7 +171,7 @@ void EscreveFileSaida(char *nomeEntrada, lista *lm)
 
   strcat(nomeSaida, ext);
 
-  printf("\n\n %s \n\n", nomeSaida);  /*APENAS PARA TESTE*/
+  /*printf("\n\n %s \n\n", nomeSaida);*/  /*APENAS PARA TESTE*/
 
   fpOut=fopen(nomeSaida, "w");
 
@@ -207,7 +206,7 @@ int main(int argc, char *argv[])
 
 	if(verifica_extensao(nomeficheiro)!=0)
 	{
-		printf("Extensão do ficheiro errada\n");
+		/*printf("Extensão do ficheiro errada\n");*/
 		exit(0);
 	}
 
@@ -217,14 +216,14 @@ int main(int argc, char *argv[])
   	VERIFICA SE NÃO HÁ ERROS NA ABERTURA DO FICHEIRO
   	*/
   	if( fp_entrada == NULL ){
-    printf( "Open error of the input file\n" );
+    /*printf( "Open error of the input file\n" );*/
     exit(0);
   }
 
   lista_matrizes = saveMatrices( fp_entrada );
 
   /*APENAS PARA TESTE*/
-    PrintList( lista_matrizes);
+   /* PrintList( lista_matrizes);*/
 
 
 
