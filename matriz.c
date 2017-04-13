@@ -338,11 +338,11 @@ int countIslands(matriz *mA, int value)
       visited[i]=(int*) malloc (sizeof(int)*GetMatrixColunas(mA));
 
 
-    for (int i = 0; i < GetMatrixLinhas(mA); ++i)
-        for (int j = 0; j < GetMatrixColunas(mA); ++j)
+    for (int i = 0; i < GetMatrixLinhas(mA); ++i){
+        for (int j = 0; j < GetMatrixColunas(mA); ++j){
           visited[i][j]=0;
-        printf("\n 1.HEY!");
-
+          }
+}
 
     int**M=GetMatrix(mA);
  
