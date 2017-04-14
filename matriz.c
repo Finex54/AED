@@ -287,7 +287,7 @@ void FreeItem( matriz* this)
 
 
 /* A function to check if a given cell (row, col) can be included in DFS*/
-int isSafe(matriz *mA, int row, int col, int **visited)
+int VerificaPosicao(matriz *mA, int row, int col, int **visited)
 {
   int **M=GetMatrix(mA);
     /* row number is in range, column number is in range and value is 1 
@@ -315,7 +315,7 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
  
     /* Recur for all connected neighbours*/
     for (k = 0; k < 4; ++k)
-        if (isSafe(mA, row + rowNbr[k], col + colNbr[k], visited) && value == GetMatrixElement(mA, row + rowNbr[k], col + colNbr[k]))
+        if (VerificaPosicao(mA, row + rowNbr[k], col + colNbr[k], visited) && value == GetMatrixElement(mA, row + rowNbr[k], col + colNbr[k]))
         {   
             cnt++;
             if(variante == 2) mA->values[row+ rowNbr[k]][col+colNbr[k]]=-1;
@@ -326,7 +326,7 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
  
 /* The main function that returns count of islands in a given boolean
 // 2D matrix*/
-  int countIslands(matriz *mA, int value, int variante)
+  int ContaCluster(matriz *mA, int value, int variante)
   {
       /* Make a bool array to mark visited cells.
       // Initially all cells are unvisited

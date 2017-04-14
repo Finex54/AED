@@ -5,7 +5,6 @@
 
 #include "matriz.h"
 #include "listas.h"
-#include "graph.h"
 
 
 /******************************************************************************
@@ -67,7 +66,7 @@ void Usage(char *nomeProg)
 void VarianteUm(matriz* mA, FILE *fp)
 {
 
-  int contagem = countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 1);
+  int contagem = ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 1);
   /*printf("\n\nContagem = %d\n\n", contagem);*/
   fprintf(fp, "%d %d %d %d %d\n%d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA),contagem);
 
@@ -82,7 +81,7 @@ void VarianteDois(matriz* mA, FILE *fp)
 COMPUTAR A MATRIZ
 */
   
-  countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
+  ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
   AjusteGravitico(mA);
 
   fprintf(fp, "%d %d %d %d %d\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));
@@ -198,8 +197,6 @@ void EscreveFileSaida(char *nomeEntrada, lista *lm)
   fclose(fpOut);
 
 }
-
-
 
 
 

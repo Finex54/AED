@@ -8,7 +8,6 @@
 
 #include "listas.h"
 
-/* type definition for structure to hold word */
 typedef struct _matriz matriz;
 
 
@@ -29,9 +28,9 @@ int** GetMatrix(matriz *mA);
 int GetMatrixLinhaCluster(matriz *mA);
 int GetMatrixColunaCluster(matriz *mA);
 int GetVariante(matriz *mA);
-int isSafe(matriz *mA, int row, int col, int **visited);
+int VerificaPosicao(matriz *mA, int row, int col, int **visited);
 void DFS(matriz *mA, int row, int col, int **visited, int value, int variante);
-int countIslands(matriz *mA, int value, int variante);
+int ContaCluster(matriz *mA, int value, int variante);
 void AjusteGravitico(matriz *mA);
 void PuxarParaCima(matriz *mA, int linha, int coluna);
 void PuxarParaEsquerda(matriz *mA, int coluna);
