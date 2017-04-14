@@ -67,7 +67,7 @@ void Usage(char *nomeProg)
 void VarianteUm(matriz* mA, FILE *fp)
 {
 
-  int contagem = countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1));
+  int contagem = countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 1);
   /*printf("\n\nContagem = %d\n\n", contagem);*/
   fprintf(fp, "%d %d %d %d %d\n%d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA),contagem);
 
@@ -81,7 +81,8 @@ void VarianteDois(matriz* mA, FILE *fp)
 /*
 COMPUTAR A MATRIZ
 */
-
+  
+  countIslands(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
 
   fprintf(fp, "%d %d %d %d %d\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));
 
@@ -93,6 +94,14 @@ COMPUTAR A MATRIZ
   }
 
   fprintf(fp, "\n");
+
+
+
+}
+
+void VarianteX(matriz *mA, FILE *fp)
+{
+  fprintf(fp, "%d %d %d %d %d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));
 
 
 
@@ -114,13 +123,18 @@ lista *aux=NULL;
 
 for(aux=lm; aux!=NULL; aux=getProxElementoLista(aux))
 {
-  int variante = GetVariante(getItemLista(aux));
-  if (variante==1)
+  matriz *mA = getItemLista(aux);
+  int variante = GetVariante(mA);
+
+  if(GetMatrixColunaCluster(mA)>GetMatrixColunas(mA)||GetMatrixColunaCluster(mA)<1|| GetMatrixLinhaCluster(mA)>GetMatrixLinhas(mA)||GetMatrixLinhaCluster(mA)<1)
+    VarianteX(getItemLista(aux), fp);
+  else if (variante==1)
     VarianteUm(getItemLista(aux), fp);
 
-  if(variante==2)
+  else if(variante==2)
     VarianteDois(getItemLista(aux), fp);
 
+  else VarianteX(getItemLista(aux), fp);
 }
 
 }

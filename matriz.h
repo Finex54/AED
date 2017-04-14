@@ -30,8 +30,8 @@ int GetMatrixLinhaCluster(matriz *mA);
 int GetMatrixColunaCluster(matriz *mA);
 int GetVariante(matriz *mA);
 int isSafe(matriz *mA, int row, int col, int **visited);
-void DFS(matriz *mA, int row, int col, int **visited, int);
-int countIslands(matriz *mA, int value);
+void DFS(matriz *mA, int row, int col, int **visited, int value, int variante);
+int countIslands(matriz *mA, int value, int variante);
 
 
 

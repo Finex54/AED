@@ -7,7 +7,7 @@
 #include "listas.h"
 
 
-long unsigned int cnt=0;
+long int cnt=0;
 
 struct _matriz {
   int **values;
@@ -299,7 +299,7 @@ int isSafe(matriz *mA, int row, int col, int **visited)
  
 /* A utility function to do DFS for a 2D boolean matrix. It only considers
 // the 8 neighbours as adjacent vertices*/
-void DFS(matriz *mA, int row, int col, int **visited, int value)
+void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
 {
   int k=0;
 
@@ -307,8 +307,8 @@ void DFS(matriz *mA, int row, int col, int **visited, int value)
     // of a given cell
     //static int rowNbr[] = {-1, -1, -1,  0, 0,  1, 1, 1};
     //static int colNbr[] = {-1,  0,  1, -1, 1, -1, 0, 1};*/
-    static int rowNbr[] = {-1, 0, 1, 0};
-    static int colNbr[] = {0, 1, 0, -1};
+    static int rowNbr[] = {-1, 0, 0, 1};
+    static int colNbr[] = {0, 1, -1, 0};
  
     /* Mark this cell as visited*/
     visited[row][col] = 1;
@@ -316,28 +316,27 @@ void DFS(matriz *mA, int row, int col, int **visited, int value)
     /* Recur for all connected neighbours*/
     for (k = 0; k < 4; ++k)
         if (isSafe(mA, row + rowNbr[k], col + colNbr[k], visited) && value == GetMatrixElement(mA, row + rowNbr[k], col + colNbr[k]))
-        {
-          cnt++;
-            DFS(mA, row + rowNbr[k], col + colNbr[k], visited, value);
-              
+        {   
+            cnt++;
+            if(variante == 2) mA->values[row+ rowNbr[k]][col+colNbr[k]]=-1;
+            DFS(mA, row + rowNbr[k], col + colNbr[k], visited, value, variante);
         }
 
 }
  
 /* The main function that returns count of islands in a given boolean
 // 2D matrix*/
-int countIslands(matriz *mA, int value)
+int countIslands(matriz *mA, int value, int variante)
 {
     /* Make a bool array to mark visited cells.
     // Initially all cells are unvisited
     //bool visited[GetMatrixLinhas(mA)][GetMatrixColunas(mA)];*/
 
     int **visited, i=0, j=0;
-
+    cnt = 0;
     visited = (int**) malloc (GetMatrixLinhas(mA)*sizeof(int*));
     for(i=0; i<GetMatrixLinhas(mA); i++)
       visited[i]=(int*) malloc (sizeof(int)*GetMatrixColunas(mA));
-
 
     for (i = 0; i < GetMatrixLinhas(mA); ++i){
         for (j = 0; j < GetMatrixColunas(mA); ++j){
@@ -345,34 +344,36 @@ int countIslands(matriz *mA, int value)
           }
 }
 
-    int**M=GetMatrix(mA);
+    int**M = GetMatrix(mA);
  
     /* Initialize count as 0 and travese through the all cells of
     // given matrixs*/
     for ( i = 0; i < GetMatrixLinhas(mA); ++i)
         for ( j = 0; j < GetMatrixColunas(mA); ++j)
-            if (M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
+            if ( i ==GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
             {                         /* visited yet, then new island found*/
-                DFS(mA, i, j, visited, value);    
+                DFS(mA, i, j, visited, value, variante);  
+                if(variante == 2 && cnt >0) mA->values[i][j] = -1;
             }
  
-
-
-
-
     for ( i = 0; i < GetMatrixLinhas(mA); ++i)
           free(visited[i]);
 
-        free(visited);
+    free(visited);
 
-    if(value!=-1)
+if(cnt==0)
+{
+        cnt=0;
+        return cnt;
+}
+
+
+else if(value!=-1)
       {
         cnt++;
-        /*cnt=cnt*(cnt-1);*/
+        cnt=cnt*(cnt-1);
       }
-      else if(cnt==1)
-        cnt=0;
-
+      
     else cnt=0;
 
     return cnt;
