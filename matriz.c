@@ -326,55 +326,92 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
  
 /* The main function that returns count of islands in a given boolean
 // 2D matrix*/
-int countIslands(matriz *mA, int value, int variante)
-{
-    /* Make a bool array to mark visited cells.
-    // Initially all cells are unvisited
-    //bool visited[GetMatrixLinhas(mA)][GetMatrixColunas(mA)];*/
+  int countIslands(matriz *mA, int value, int variante)
+  {
+      /* Make a bool array to mark visited cells.
+      // Initially all cells are unvisited
+      //bool visited[GetMatrixLinhas(mA)][GetMatrixColunas(mA)];*/
 
-    int **visited, i=0, j=0;
-    cnt = 0;
-    visited = (int**) malloc (GetMatrixLinhas(mA)*sizeof(int*));
-    for(i=0; i<GetMatrixLinhas(mA); i++)
-      visited[i]=(int*) malloc (sizeof(int)*GetMatrixColunas(mA));
+      int **visited, i=0, j=0;
+      cnt = 0;
+      visited = (int**) malloc (GetMatrixLinhas(mA)*sizeof(int*));
+      for(i=0; i<GetMatrixLinhas(mA); i++)
+        visited[i]=(int*) malloc (sizeof(int)*GetMatrixColunas(mA));
 
-    for (i = 0; i < GetMatrixLinhas(mA); ++i){
-        for (j = 0; j < GetMatrixColunas(mA); ++j){
-          visited[i][j]=0;
-          }
-}
-
-    int**M = GetMatrix(mA);
- 
-    /* Initialize count as 0 and travese through the all cells of
-    // given matrixs*/
-    for ( i = 0; i < GetMatrixLinhas(mA); ++i)
-        for ( j = 0; j < GetMatrixColunas(mA); ++j)
-            if ( i ==GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
-            {                         /* visited yet, then new island found*/
-                DFS(mA, i, j, visited, value, variante);  
-                if(variante == 2 && cnt >0) mA->values[i][j] = -1;
+      for (i = 0; i < GetMatrixLinhas(mA); ++i){
+          for (j = 0; j < GetMatrixColunas(mA); ++j){
+            visited[i][j]=0;
             }
- 
-    for ( i = 0; i < GetMatrixLinhas(mA); ++i)
-          free(visited[i]);
+  }
 
-    free(visited);
+      int**M = GetMatrix(mA);
+   
+      /* Initialize count as 0 and travese through the all cells of
+      // given matrixs*/
+      for ( i = 0; i < GetMatrixLinhas(mA); ++i)
+          for ( j = 0; j < GetMatrixColunas(mA); ++j)
+              if ( i ==GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
+              {                         /* visited yet, then new island found*/
+                  DFS(mA, i, j, visited, value, variante);  
+                  if(variante == 2 && cnt >0) mA->values[i][j] = -1;
+              }
+   
+      for ( i = 0; i < GetMatrixLinhas(mA); ++i)
+            free(visited[i]);
 
-if(cnt==0)
-{
-        cnt=0;
-        return cnt;
-}
+      free(visited);
+
+    if(cnt==0)
+  {
+          cnt=0;
+          return cnt;
+  }
+
+    else if(value!=-1)
+        {
+          cnt++;
+          cnt=cnt*(cnt-1);
+        }
+        
+      else cnt=0;
+
+      return cnt;
+  }
 
 
-else if(value!=-1)
-      {
-        cnt++;
-        cnt=cnt*(cnt-1);
+/*Ajusta a matriz quando os clusters são removidos*/
+  void AjusteGravitico(matriz *mA)
+  {
+    int i, j;
+      for(j = 0; j < GetMatrixColunas(mA); j++){
+        for(i = 0; i < GetMatrixLinhas(mA); i++) 
+          /*Em cada coluna ajusta na vertical*/
+          if(mA->values[i][j] == -1 && i!= 0 && mA->values[i-1][j] != -1) PuxarParaCima(mA, i, j);
+        /*Depois de ajustar na vertical ajusta na horizontal*/
+        if((mA->values[GetMatrixLinhas(mA)-1][j] == -1) && j!=0 && mA->values[GetMatrixLinhas(mA)-1][j-1] != -1) PuxarParaEsquerda(mA, j);
       }
-      
-    else cnt=0;
+   }
 
-    return cnt;
-}
+/*Puxa os valores da matriz a -1 o mais para cima possível, para cada coluna*/
+  void PuxarParaCima(matriz *mA, int linha, int coluna)
+  {
+    int i;
+    
+    for(i = linha; i>0; i--)
+      if(mA->values[i-1][coluna]!=-1){
+          mA->values[i][coluna] = GetMatrixElement(mA,i-1, coluna);
+          mA->values[i-1][coluna] = -1;
+        }
+  }
+
+/*Puxa uma coluna da matriz a -1 o mais para a esquerda possível*/
+  void PuxarParaEsquerda(matriz *mA, int coluna)
+  {
+    int i, j;
+    for(j = coluna; j>0; j--)
+      if(mA->values[GetMatrixLinhas(mA)-1][j-1]!=-1 && j!= 0)
+        for(i = 0; i < GetMatrixLinhas(mA); i++){
+          mA->values[i][j] = GetMatrixElement(mA, i, j-1);
+          mA->values[i][j-1] = -1;
+        }
+      }
