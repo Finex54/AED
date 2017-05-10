@@ -28,7 +28,7 @@ struct _matriz {
  *
  * Description: returns the new matrix 
  *****************************************************************************/
-matriz *NewMatrix(int linhas, int colunas, int variante, int coluna_cluster, int linha_cluster)
+matriz *NewMatrix(int linhas, int colunas, int variante)
 {
 
   int pI, pJ;
@@ -48,8 +48,6 @@ matriz *NewMatrix(int linhas, int colunas, int variante, int coluna_cluster, int
   Mat->linhas = linhas;
   Mat->colunas = colunas;
   Mat->variante = variante;
-  Mat->coluna_cluster = coluna_cluster;
-  Mat->linha_cluster = linha_cluster;
 
   return Mat;
 
@@ -79,6 +77,21 @@ void SetMatrixElement(matriz *mA, int pI, int pJ, float value)
 }
 
 
+/******************************************************************************
+ * SetMatrixCluster
+ *****************************************************************************/
+void SetMatrixCluster(matriz *mA, int linha_cluster, int coluna_cluster)
+{
+
+  mA->linha_cluster = linha_cluster;
+  mA->coluna_cluster = coluna_cluster;
+
+  return;
+
+}
+
+
+
 
 
 
@@ -97,7 +110,7 @@ lista *saveMatrices( FILE *fm )
   lista *lm;
   matriz *newMatrix;
   
-  int m_linhas = 0, m_colunas=0, variante=0, linha=0, coluna=0;
+  int m_linhas = 0, m_colunas=0, variante=0;
   int pJ, pI, err;
   int NumberMatrices = 0;
   float newEntry = 0.0;
@@ -110,26 +123,21 @@ lista *saveMatrices( FILE *fm )
   while( 1 ){ 
 
     /* scan the size of the matrix NumberMatrices */
-    if( fscanf( fm, "%d %d %d %d %d", &m_linhas, &m_colunas, &variante, &coluna, &linha ) != 5 )
+    if( fscanf( fm, "%d %d %d", &m_linhas, &m_colunas, &variante) != 3 )
       break;
 
-    /* verify if size is correct */
-    /*if( m_size < 2 || m_size > 9 )
-      {
-            printf("FileData is corrupted.\n");
-            exit(1);
-      }*/
+
 
 
     /* create a new matrix */
-    newMatrix = NewMatrix( m_linhas, m_colunas, variante, linha, coluna );
+    newMatrix = NewMatrix( m_linhas, m_colunas, variante);
 
     /* save the matrix */
     for( pI = 0 ; pI < m_linhas ; pI++ ){
       for( pJ = 0 ; pJ < m_colunas ; pJ++ ){
         if( fscanf( fm, "%f", &newEntry ) != 1 )
           {
-            printf("FileData is corrupted.\n");
+            /*printf("FileData is corrupted.\n");*/
             exit(1);
           }
 

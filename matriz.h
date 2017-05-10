@@ -13,8 +13,9 @@ typedef struct _matriz matriz;
 
 
 lista *saveMatrices( FILE *fm );
-matriz *NewMatrix(int linhas, int colunas, int variante, int coluna_cluster, int linha_cluster);
+matriz *NewMatrix(int linhas, int colunas, int variante);
 void SetMatrixElement(matriz *mA, int pI, int pJ, float value);
+void SetMatrixCluster(matriz *mA, int linha_cluster, int coluna_cluster);
 lista  *criaNovoNoLista (lista* lm, matriz* this, int *err);
 matriz* getItemLista (lista *m);
 void PrintMatrix(matriz *mA);

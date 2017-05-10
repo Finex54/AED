@@ -74,12 +74,12 @@ void VarianteUm(matriz* mA, FILE *fp)
 }
 
 
+
+
+/* ---------------------------------------------------REMOVER?--------------------------------------------------------------------------------------
 void VarianteDois(matriz* mA, FILE *fp)
 {
     int pI, pJ;
-/*
-COMPUTAR A MATRIZ
-*/
   
   ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
   AjusteGravitico(mA);
@@ -107,6 +107,10 @@ void VarianteX(matriz *mA, FILE *fp)
 
 }
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 
 /**********************************************
 *
@@ -120,24 +124,95 @@ void Calcula(lista *lm, FILE *fp)
 {
 
 lista *aux=NULL;
+int pI, pJ;
 
-for(aux=lm; aux!=NULL; aux=getProxElementoLista(aux))
-{
+
+aux=lm;
+
+if (aux==NULL)
+  return;
+
+Calcula(getProxElementoLista(aux),fp);
+
+
   matriz *mA = getItemLista(aux);
   int variante = GetVariante(mA);
+  /*printf("\n%d\n", variante); -----------APENAS PARA TESTE------*/
+  int i=0, j=0;
 
-  if(GetMatrixColunaCluster(mA)>GetMatrixColunas(mA)||GetMatrixColunaCluster(mA)<1|| GetMatrixLinhaCluster(mA)>GetMatrixLinhas(mA)||GetMatrixLinhaCluster(mA)<1)
-    VarianteX(getItemLista(aux), fp);
-  else if (variante==1)
-    VarianteUm(getItemLista(aux), fp);
+
+
+  /*for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){
+    for( pJ = 0; pJ<GetMatrixColunas(mA) ; pJ++ )
+      printf( "%d ", GetMatrixElement( mA, pI, pJ ) );
+    printf("\n" );}*/ /* ----------- PARA TESTAR SE A MATRIZ ESTÁ BEM INTRODUZIDA----------------*/
+
+  /*if(GetMatrixColunaCluster(mA)>GetMatrixColunas(mA)||GetMatrixColunaCluster(mA)<1|| GetMatrixLinhaCluster(mA)>GetMatrixLinhas(mA)||GetMatrixLinhaCluster(mA)<1)
+    fprintf(fp, "%d %d %d %d %d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));           /* ALTERAR */
+
+/*
+  else*/ if (variante==-1) /*VARIANTE UM OCORRE COM A LEITURA DO VALOR '-1' NO FICHEIRO DE ENTRADA*/
+    {
+
+  int contagem = 0;
+  /*fprintf(fp, "%d %d %d %d %d\n%d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA),contagem);*/
+
+        for( pI = 1; pI <= GetMatrixLinhas(mA) ; pI++ ){
+          for( pJ = 1; pJ<=GetMatrixColunas(mA) ; pJ++ )
+          {
+            /*fprintf( fp, "%d ", GetMatrixElement( mA, pI, pJ ) );*/
+            SetMatrixCluster(mA, GetMatrixLinhas(mA)-pI, pJ);
+            /*printf("\nCiclo: %d - %d\n", pI, pJ);    
+            printf("Matrix: %d - %d", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));*/
+            contagem= contagem + ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA)-1, GetMatrixColunaCluster(mA) - 1), 2);
+
+
+                for( i = 0; i < GetMatrixLinhas(mA) ; i++ ){
+    for( j = 0; j<GetMatrixColunas(mA) ; j++ )
+      fprintf( fp, "%d ",  GetMatrixElement(mA,i, j));
+    fprintf(fp, "\n" );
+  }
+          }
+
+          fprintf(fp, "\n" );
+          printf("\n\n\nCONTAGEM: %d\n\n\n\n", contagem);
+        }
+
+
+
+  fprintf(fp, "\n\n\n" );
+ for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){
+    for( pJ = 0; pJ<GetMatrixColunas(mA) ; pJ++ )
+      fprintf( fp, "%d ", GetMatrixElement( mA, pI, pJ ) );
+    fprintf(fp, "\n" );
+  }
+
+
+  }
+
+
+
 
   else if(variante==2)
-    VarianteDois(getItemLista(aux), fp);
+    {ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
+  AjusteGravitico(mA);
 
-  else VarianteX(getItemLista(aux), fp);
+  /*fprintf(fp, "%d %d %d %d %d\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));*/
+
+
+  /*for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){
+    for( pJ = 0; pJ<GetMatrixColunas(mA) ; pJ++ )
+      fprintf( fp, "%d ", GetMatrixElement( mA, pI, pJ ) );
+    fprintf(fp, "\n" );
+  }*/
+
+  /*fprintf(fp, "\n");*/}
+
+  /*else 
+    fprintf(fp, "%d %d %d %d %d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));*/
 }
 
-}
+
 
 
 
@@ -173,7 +248,7 @@ int verifica_extensao(char* filename)
 
 void EscreveFileSaida(char *nomeEntrada, lista *lm)
 {
-  char ext[5] = "step";
+  char ext[6] = "moves";
   char nomeSaida[100];
   int i=0;
   FILE *fpOut;
@@ -185,7 +260,6 @@ void EscreveFileSaida(char *nomeEntrada, lista *lm)
 
   strcat(nomeSaida, ext);
 
-  /*printf("\n\n %s \n\n", nomeSaida);*/  /*APENAS PARA TESTE*/
 
   fpOut=fopen(nomeSaida, "w");
 
@@ -245,6 +319,7 @@ int main(int argc, char *argv[])
 
 
   	/*Liberta a memória da lista*/
+
     libertaLista( lista_matrizes, FreeItem );
 
 
