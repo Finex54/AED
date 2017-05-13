@@ -121,6 +121,7 @@ void Calcula(lista *lm, FILE *fp)
 {
 
 lista *aux=NULL;
+lance *lances=NULL;
 int pI, pJ;
 
 
@@ -155,48 +156,41 @@ Calcula(getProxElementoLista(aux),fp);
      fprintf(fp, "%d %d %d \n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA));
 
 
-LANCES:  for(pI=GetMatrixLinhas(mA); pI > 0; pI--){
+LANCES:  for(pI=GetMatrixLinhas(mA)-1; pI > 0; pI--){
           for(pJ=GetMatrixColunas(mA); pJ > 0; pJ--){
-
-
-        /*for( pI = 1; pI <= GetMatrixLinhas(mA) ; pI++ ){
-          for( pJ = 1; pJ<=GetMatrixColunas(mA) ; pJ++ )
-          {*/
-            /*fprintf( fp, "%d ", GetMatrixElement( mA, pI, pJ ) );*/
+			 
             SetMatrixCluster(mA, GetMatrixLinhas(mA)-pI, pJ);
-            /*printf("\nCiclo: %d - %d\n", pI, pJ);    
-            printf("Matrix: %d - %d", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));*/
-            contagem_aux=contagem;
-              printf("\n %d %d \n", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));
-              printf("\n\n: %d %d\n\n", pI, pJ);
-              contagem= contagem + ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA)-1, GetMatrixColunaCluster(mA)-1), 2);
-              printf("\n\ncontagem = contagem +ContaCluster(mA, GetMatrixElement(mA, %d, %d, 2)) \n\n", GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA)-1, GetMatrixColunaCluster(mA)-1);
-
+            
+            contagem_aux=contagem;	/* PARA VERIFICAR SE HÁ ALTERAÇÃO DA PONTUAÇÃO*/
+              contagem= contagem + ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
+			  
+	  
             if(contagem != contagem_aux)
             {
+				lances *temp;
+				AjusteGravitico(mA);
               nr_lances++;
-              printf("\n FINAL: %d %d \n", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));
-              printf("\n\nFINAL: %d %d\n\n", pI, pJ);
+			  
+			  temp = (*lances) malloc(sizeof(lances));
+			  temp.linha=GetMatrixLinhaCluster(mA);
+			  temp.coluna=GetMatrixColunaCluster(mA);
+			  
+              printf("\n\nFINAL: %d %d\n\n", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) );
               AjusteGravitico(mA);
+			  
+				
               goto LANCES;
             }
+				
+			
 
           }
 
 
-    for( i = 0; i < GetMatrixLinhas(mA) ; i++ ){
-    for( j = 0; j<GetMatrixColunas(mA) ; j++ )
-      fprintf( fp, "%d ",  GetMatrixElement(mA,i, j));
-    fprintf(fp, "\n" );
-  }
-
-          fprintf(fp, "\n" );
-          printf("\n\n\nCONTAGEM: %d\n\n\n\n", contagem);
+          printf("\nCONTAGEM: %d\n", contagem);
         }
 
 
-
-  fprintf(fp, "\n\n\n" );
         fprintf(fp, "%d %d\n", nr_lances, contagem);
 
  for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){

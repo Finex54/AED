@@ -12,8 +12,19 @@ struct _lista {
   struct _lista *prox;
 };
 
+struct _lance{
+	int linha, coluna;
+	struc_lance *prox;
+};
+
 
 lista *iniLista(void)
+{
+
+  return NULL;
+}
+
+lance *inilance(void)
 {
 
   return NULL;
@@ -62,6 +73,36 @@ lista  *criaNovoNoLista (lista* lm, matriz* this, int *err)
   }
   return lm;
 }
+
+/******************************************************************************
+ * criaNovoNoLance ()
+ *
+ * Arguments: nome - Item to save in list node
+ * Returns: lance  *
+ * Side-Effects: none
+ *
+ * Description: creates and returns a new node that can later be added to the
+ *              list
+ *
+ *****************************************************************************/
+lance  *criaNovoNoLance (lance* lm, int linha, int coluna, int *err)
+{
+  lance *novoNo;
+
+  novoNo = (lance*) malloc(sizeof(lance));
+  if(novoNo!=NULL) {
+
+    novoNo->linha = linha;
+	novoNo->coluna = coluna;
+    novoNo->prox = lm;
+    lm = novoNo;
+    *err = 0;
+  } else {
+    *err = 1;
+  }
+  return lm;
+}
+
 
 
 

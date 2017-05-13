@@ -3,10 +3,13 @@
 
 
 typedef struct _lista lista;
+typedef struct _lance lance;
 
 
 lista *iniLista(void);
 lista *getProxElementoLista(lista *m);
+
+lance *inilance(void);
 
 
 

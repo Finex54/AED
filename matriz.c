@@ -327,7 +327,7 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
             cnt++;
             if(variante == 2) {mA->values[row+ rowNbr[k]][col+colNbr[k]]=-1; };
             DFS(mA, row + rowNbr[k], col + colNbr[k], visited, value, variante);
-            printf(" DFS: %d %d  ",row + rowNbr[k], col + colNbr[k]);
+            /*printf(" DFS: %d %d  ",row + rowNbr[k], col + colNbr[k]);*/
 
         }
 
@@ -362,7 +362,7 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
           for ( j = 0; j < GetMatrixColunas(mA); ++j)
               if ( i == GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
               {   
-                printf("\n DFS: %d %d \n", i, j);
+                /*printf("\n DFS: %d %d \n", i, j);*/
                 /* visited yet, then new island found*/
                   DFS(mA, i, j, visited, value, variante);  
                   if(variante == 2 && cnt >0) mA->values[i][j] = -1;
