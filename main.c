@@ -121,11 +121,12 @@ void Calcula(lista *lm, FILE *fp)
 {
 
 lista *aux=NULL;
-lance *lances=NULL;
 int pI, pJ;
 
 
 aux=lm;
+lance* lista_lances=inilance();
+lance* aux_lance=NULL;
 
 if (aux==NULL)
   return;
@@ -136,15 +137,8 @@ Calcula(getProxElementoLista(aux),fp);
   matriz *mA = getItemLista(aux);
   int nr_lances=0;
   int variante = GetVariante(mA);
-  int i =0, j=0;
-  /*printf("\n%d\n", variante); -----------APENAS PARA TESTE------*/
 
 
-
-  /*for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){
-    for( pJ = 0; pJ<GetMatrixColunas(mA) ; pJ++ )
-      printf( "%d ", GetMatrixElement( mA, pI, pJ ) );
-    printf("\n" );} ----------- PARA TESTAR SE A MATRIZ ESTÁ BEM INTRODUZIDA----------------*/
 
   /*if(GetMatrixColunaCluster(mA)>GetMatrixColunas(mA)||GetMatrixColunaCluster(mA)<1|| GetMatrixLinhaCluster(mA)>GetMatrixLinhas(mA)||GetMatrixLinhaCluster(mA)<1)
     fprintf(fp, "%d %d %d %d %d\n\n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA), GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA));            ALTERAR */
@@ -167,37 +161,31 @@ LANCES:  for(pI=GetMatrixLinhas(mA)-1; pI > 0; pI--){
 	  
             if(contagem != contagem_aux)
             {
-				lances *temp;
 				AjusteGravitico(mA);
-              nr_lances++;
-			  
-			  temp = (*lances) malloc(sizeof(lances));
-			  temp.linha=GetMatrixLinhaCluster(mA);
-			  temp.coluna=GetMatrixColunaCluster(mA);
-			  
-              printf("\n\nFINAL: %d %d\n\n", GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) );
-              AjusteGravitico(mA);
+				nr_lances++;
+				lista_lances=criaNovoNoLance (lista_lances, GetMatrixLinhaCluster(mA),GetMatrixColunaCluster(mA));
+				AjusteGravitico(mA);
 			  
 				
-              goto LANCES;
+				goto LANCES;
             }
 				
 			
 
           }
 
-
-          printf("\nCONTAGEM: %d\n", contagem);
         }
 
 
         fprintf(fp, "%d %d\n", nr_lances, contagem);
-
- for( pI = 0; pI < GetMatrixLinhas(mA) ; pI++ ){
-    for( pJ = 0; pJ<GetMatrixColunas(mA) ; pJ++ )
-      fprintf( fp, "%d ", GetMatrixElement( mA, pI, pJ ) );
-    fprintf(fp, "\n" );
-  }
+		printReverse(lista_lances, fp);
+		
+	/*------------------------------------------------------LIBERTAR LISTA DE LANCES-------------------------------------------------------------*/
+		
+while ((aux_lance = lista_lances) != NULL) { 
+    lista_lances = getProxLanceLista(lista_lances);
+    free (aux_lance);
+}
 
 
   }

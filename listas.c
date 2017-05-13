@@ -14,7 +14,7 @@ struct _lista {
 
 struct _lance{
 	int linha, coluna;
-	struc_lance *prox;
+	struct _lance *prox;
 };
 
 
@@ -32,6 +32,12 @@ lance *inilance(void)
 
 
 lista *getProxElementoLista(lista *m)
+{
+
+  return m -> prox;
+}
+
+lance *getProxLanceLista(lance *m)
 {
 
   return m -> prox;
@@ -85,7 +91,7 @@ lista  *criaNovoNoLista (lista* lm, matriz* this, int *err)
  *              list
  *
  *****************************************************************************/
-lance  *criaNovoNoLance (lance* lm, int linha, int coluna, int *err)
+lance  *criaNovoNoLance (lance* lm, int linha, int coluna)
 {
   lance *novoNo;
 
@@ -96,14 +102,23 @@ lance  *criaNovoNoLance (lance* lm, int linha, int coluna, int *err)
 	novoNo->coluna = coluna;
     novoNo->prox = lm;
     lm = novoNo;
-    *err = 0;
-  } else {
-    *err = 1;
   }
   return lm;
 }
 
 
+void printReverse(lance* head, FILE *fp)
+{
+    /* Base case  */
+    if (head == NULL)
+       return;
+ 
+    /* print the list after head node*/
+    printReverse(head->prox,fp);
+ 
+    /*After everything else is printed, print head*/
+    fprintf(fp,"%d %d\n", head->linha, head->coluna);
+}
 
 
 /******************************************************************************

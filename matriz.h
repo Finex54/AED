@@ -35,6 +35,9 @@ int ContaCluster(matriz *mA, int value, int variante);
 void AjusteGravitico(matriz *mA);
 void PuxarParaCima(matriz *mA, int linha, int coluna);
 void PuxarParaEsquerda(matriz *mA, int coluna);
+lance  *criaNovoNoLance (lance* lm, int linha, int coluna);
+void printReverse(lance* head, FILE *fp);
+lance *getProxLanceLista(lance *m);
 
 
 #endif
