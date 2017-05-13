@@ -91,10 +91,6 @@ void SetMatrixCluster(matriz *mA, int linha_cluster, int coluna_cluster)
 }
 
 
-
-
-
-
 /******************************************************************************
  *  saveMatrices ()
  *
@@ -321,14 +317,20 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
     /* Mark this cell as visited*/
     visited[row][col] = 1;
  
+
     /* Recur for all connected neighbours*/
+
+
     for (k = 0; k < 4; ++k)
         if (VerificaPosicao(mA, row + rowNbr[k], col + colNbr[k], visited) && value == GetMatrixElement(mA, row + rowNbr[k], col + colNbr[k]))
         {   
             cnt++;
-            if(variante == 2) mA->values[row+ rowNbr[k]][col+colNbr[k]]=-1;
+            if(variante == 2) {mA->values[row+ rowNbr[k]][col+colNbr[k]]=-1; };
             DFS(mA, row + rowNbr[k], col + colNbr[k], visited, value, variante);
+            printf(" DFS: %d %d  ",row + rowNbr[k], col + colNbr[k]);
+
         }
+
 
 }
  
@@ -355,15 +357,17 @@ void DFS(matriz *mA, int row, int col, int **visited, int value, int variante)
       int**M = GetMatrix(mA);
    
       /* Initialize count as 0 and travese through the all cells of
-      // given matrixs*/
+       given matrixs*/
       for ( i = 0; i < GetMatrixLinhas(mA); ++i)
           for ( j = 0; j < GetMatrixColunas(mA); ++j)
-              if ( i ==GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
-              {                         /* visited yet, then new island found*/
+              if ( i == GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA) && j==GetMatrixColunaCluster(mA) - 1 && M[i][j] == value && !visited[i][j]) /*// If a cell with value 1 is not*/
+              {   
+                printf("\n DFS: %d %d \n", i, j);
+                /* visited yet, then new island found*/
                   DFS(mA, i, j, visited, value, variante);  
                   if(variante == 2 && cnt >0) mA->values[i][j] = -1;
               }
-   
+
       for ( i = 0; i < GetMatrixLinhas(mA); ++i)
             free(visited[i]);
 
