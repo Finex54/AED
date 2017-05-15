@@ -150,18 +150,18 @@ Calcula(getProxElementoLista(aux),fp);
      fprintf(fp, "%d %d %d \n", GetMatrixLinhas(mA), GetMatrixColunas(mA), GetVariante(mA));
 
 
-LANCES:  for(pI=GetMatrixLinhas(mA)-1; pI > 0; pI--){
-          for(pJ=GetMatrixColunas(mA); pJ > 0; pJ--){
+LANCES:  for(pI=GetMatrixLinhas(mA)-1; pI >= 0; pI--){
+         /* for(pJ=GetMatrixColunas(mA); pJ > 0; pJ--){*/
+		 for(pJ=0; pJ<GetMatrixColunas(mA); pJ++){
 			 
-            SetMatrixCluster(mA, GetMatrixLinhas(mA)-pI, pJ);
+            SetMatrixCluster(mA, GetMatrixLinhas(mA)-pI, pJ+1);
             
             contagem_aux=contagem;	/* PARA VERIFICAR SE HÁ ALTERAÇÃO DA PONTUAÇÃO*/
-              contagem= contagem + ContaCluster(mA, GetMatrixElement(mA, GetMatrixLinhas(mA) - GetMatrixLinhaCluster(mA), GetMatrixColunaCluster(mA) - 1), 2);
+              contagem= contagem + ContaCluster(mA, GetMatrixElement(mA, pI, pJ), 2);
 			  
 	  
             if(contagem != contagem_aux)
             {
-				AjusteGravitico(mA);
 				nr_lances++;
 				lista_lances=criaNovoNoLance (lista_lances, GetMatrixLinhaCluster(mA),GetMatrixColunaCluster(mA));
 				AjusteGravitico(mA);
@@ -179,6 +179,8 @@ LANCES:  for(pI=GetMatrixLinhas(mA)-1; pI > 0; pI--){
 
         fprintf(fp, "%d %d\n", nr_lances, contagem);
 		printReverse(lista_lances, fp);
+		fprintf(fp,"\n");
+		
 		
 	/*------------------------------------------------------LIBERTAR LISTA DE LANCES-------------------------------------------------------------*/
 		
